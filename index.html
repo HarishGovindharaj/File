@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.4/dist/css/datepicker.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.4/dist/js/datepicker-full.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Hello, world!</title>
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+
+        .datepicker.active {
+            z-index: 999999;
+        }
+
+        .required:after {
+            content: " *";
+            color: red;
+            font-weight: 700;
+        }
+
+        .align-center {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .tab {
+            border: 1px solid #ccc;
+            background-color: #0275c7;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+        }
+
+        /* Style the buttons that are used to open the tab content */
+        .tab button {
+            display: block;
+            background-color: inherit;
+            color: white;
+            padding: 22px 16px;
+            width: 100%;
+            border: none;
+            outline: none;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #175b9f;
+        }
+
+        /* Create an active/current "tab button" class */
+        .tab button.active {
+            background-color: #175b9f;
+        }
+
+        .listcontainer {
+            background-color: aliceblue;
+            border-radius: 5px;
+            border: 1px solid #e9e9e9;
+        }
+
+        .listcontainer ul {
+            list-style: none;
+            display: flex;
+            justify-content: space-evenly;
+            margin: 0px;
+            padding: 0px;
+            flex-wrap: wrap;
+        }
+
+        .listcontainer ul li {
+            margin: 7px;
+            width: 30%;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .listcontainer ul li span {
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <button type="button" class="btn btn-outline-primary align-center me-5" data-bs-toggle="modal"
+                    data-bs-target="#myModal"><i class="fa fa-plus-square-o me-2" style="font-size:24px"></i>New
+                    Ticket</button>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="tab">
+        <button class="tablinks">Dashboard</button>
+        <button class="tablinks active">Tickets</button>
+        <button class="tablinks">Social</button>
+    </div>
+    <div class="container" id="tickets">
+
+    </div>
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <!-- Modal body -->
+                <div class=" modal-body border-start border-2 p-5 border-dark">
+                    <form action="/action_page.php">
+                        <h2>Contact Info</h2>
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="fw-bold required text-black-50">Contact:</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pwd" class="fw-bold required text-black-50">Phone Number:</label>
+                            <input type="text" class="form-control" id="phone" placeholder="Enter password" name="pswd"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pwd" class="fw-bold required text-black-50">Service Location:</label>
+                            <input type="text" class="form-control" id="location" placeholder="Location" name="pswd"
+                                required>
+                        </div>
+                        <h2>Service Info</h2>
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="fw-bold text-black-50">Subject:</label>
+                            <input type="text" class="form-control" id="subject" placeholder="Timebank Test"
+                                name="email" required>
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="fw-bold text-black-50">Describtion:</label>
+                            <textarea class="form-control" rows="5" id="comment" name="text" required></textarea>
+                        </div>
+                        <h2>Appointment Info</h2>
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="fw-bold text-black-50">Service group:</label>
+                            <select class="form-select" aria-label="Default select example" id="service">
+                                <option selected>--</option>
+                                <option value="1">Sample 1</option>
+                                <option value="2">Sample 2</option>
+                                <option value="3">Sample 3</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="fw-bold text-black-50">Field technician:</label>
+                            <select class="form-select" aria-label="Default select example" id="technician">
+                                <option selected>--</option>
+                                <option value="1">Agent 1</option>
+                                <option value="2">Agent 1</option>
+                                <option value="3">Agent 3</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="fw-bold text-black-50">Appointment Start Date:</label>
+                            <div class="input-group mb-4">
+                                <input type="text" class="datepicker_input form-control" placeholder="--" required
+                                    id="startdate">
+                            </div>
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="fw-bold text-black-50">Appointment End Date:</label>
+                            <div class="input-group mb-4">
+                                <input type="text" class="datepicker_input form-control" placeholder="--" required
+                                    id="enddate">
+                            </div>
+                        </div>
+                        <h2>Properites</h2>
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="fw-bold text-black-50">Status</label>
+                            <select class="form-select" aria-label="Default select example" id="status">
+                                <option selected>Open</option>
+                                <option value="1">Pending</option>
+                                <option value="2">Ressloved</option>
+                                <option value="3">Closed</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="fw-bold text-black-50">Priority</label>
+                            <select class="form-select" aria-label="Default select example" id="priority">
+                                <option selected>Low</option>
+                                <option value="1">Medium</option>
+                                <option value="2">High</option>
+                                <option value="3">Urgent</option>
+                            </select>
+                        </div>
+                        <div class="d-flex form-check justify-content-end">
+                            <label class="m-2">
+                                <input type="checkbox" class="form-check-input" id="another">
+                                <label class="form-check-label" for="exampleCheck1">Create another</label>
+                            </label>
+                            <button type="button" id="close" data-bs-dismiss="modal" class="btn btn-secondary m-1">Cancel</button>
+                            <button type="button" onclick="create()" class="btn btn-primary m-1">Create</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+
+    var dummydata = [
+        {
+            email: "dummy@gmail.com",
+            phone: "0000011111",
+            location: "chennai",
+            subject: "demo ticket",
+            comment: "ticket created",
+            service: "demo ticket",
+            technician: "Agent",
+            startdate: "10/3/22",
+            enddate: "1/4/22",
+            status: "new",
+            priority: "high",
+            another: "no",
+        },
+        {
+            email: "dummy1@gmail.com",
+            phone: "0100011011",
+            location: "chennai1",
+            subject: "demo ticket1",
+            comment: "ticket created 1",
+            service: "demo ticket 1",
+            technician: "Agent 1",
+            startdate: "10/3/22",
+            enddate: "1/4/22",
+            status: "new",
+            priority: "high 1",
+            another: "no 1",
+        }
+    ]
+
+
+    function create() {
+        let obj = {};
+        obj.email = document.getElementById('email').value
+        obj.phone = document.getElementById('phone').value
+        obj.location = document.getElementById('location').value
+        obj.subject = document.getElementById('subject').value
+        obj.comment = document.getElementById('comment').value
+        obj.service = document.getElementById('service').value
+        obj.technician = document.getElementById('technician').value
+        obj.startdate = document.getElementById('startdate').value
+        obj.enddate = document.getElementById('enddate').value
+        obj.status = document.getElementById('status').value
+        obj.priority = document.getElementById('priority').value
+        obj.another = document.getElementById('another').value
+        if (obj.email == "" || obj.phone == "" || obj.location == "" || obj.subject == "" || obj.comment == ""  || obj.service == ""  || obj.technician == "" || obj.startdate == ""|| obj.enddate == "" ) {
+            alert("Input field should not empty");
+            return false;
+        }
+        dummydata.push(obj)
+        populateData()
+        document.getElementById('close').click()
+    }
+
+
+
+    const getDatePickerTitle = elem => {
+        const label = elem.nextElementSibling;
+        let titleText = '';
+        if (label && label.tagName === 'LABEL') {
+            titleText = label.textContent;
+        } else {
+            titleText = elem.getAttribute('aria-label') || '';
+        }
+        return titleText;
+    }
+
+    const elems = document.querySelectorAll('.datepicker_input');
+    for (const elem of elems) {
+        const datepicker = new Datepicker(elem, {
+            'format': 'dd/mm/yyyy',
+            title: getDatePickerTitle(elem)
+        });
+    }
+
+    function populateData() {
+        let container = document.getElementById('tickets')
+        container.innerHTML = ""
+        dummydata.forEach((data) => {
+            let div = document.createElement('div')
+            div.className = 'listcontainer m-3 p-2'
+            div.innerHTML = `<ul>\
+                <li>\
+                   <span> Email :  </span> ${data.email}\
+                </li>\
+                <li>\
+                    <span> Phone :  </span>  ${data.phone}\
+                </li>\
+                <li>\
+                    <span> Location :  </span>  ${data.location}\
+                </li>\
+                <li>\
+                    <span> Technician :  </span>   ${data.technician}\
+                </li>\
+                <li>\
+                    <span> Date :  </span>  ${data.startdate} - ${data.enddate}\
+                </li>\
+                <li>\
+                    <span> Status :  </span>  ${data.status}\
+                </li>\
+            </ul>`
+            container.appendChild(div)
+        })
+    }
+    populateData()
+</script>
+
+</html>
